@@ -1,0 +1,27 @@
+# Nuxt
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+.npmrc
+
+# Local
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Tooling
+.claude
+
+# Editors
+/.fleet
+/.idea
+/.vscode

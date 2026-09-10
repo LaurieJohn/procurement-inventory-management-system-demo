@@ -1,0 +1,32 @@
+/*
+ * PIMS global overrides.
+ *
+ * The Argon theme is loaded verbatim from public/argon; this sheet only
+ * carries the handful of rules the Blade layout used to inline.
+ */
+
+/* The layout painted every module header in the brand blue rather than Argon's
+   default primary. */
+.header.bg-primary {
+    background: #0038a8 !important;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Argon's flush tables set cells to nowrap; the PIMS tables opt back in. */
+.table span {
+    white-space: normal !important;
+}
+
+/* Required-field highlight used by the create/edit forms. */
+.highlight {
+    border: 2px solid rgb(231, 207, 69);
+    background-color: #fff9e6;
+}
+
+/* A router-link rendered as a dropdown item keeps the pointer cursor. */
+.dropdown-item {
+    cursor: pointer;
+}
