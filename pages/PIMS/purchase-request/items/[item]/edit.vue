@@ -3,13 +3,23 @@ import { computed } from 'vue'
 
 /** Edit an item inside a lot. */
 const route = useRoute()
+const auth = useAuthStore()
 const store = usePurchaseRequestStore()
 const ppmp = usePpmpStore()
 const modal = usePimsModal()
 
 const item = computed(() => store.findItem(Number(route.params.item)))
 const lot = computed(() => (item.value ? store.findLot(item.value.lot_id) : undefined))
-const procurement = computed(() => (lot.value ? store.find(lot.value.procurement_id) : undefined))
+/**
+ * Reached by URL as easily as by link, so the same visibility rule the listing
+ * applies is checked here too. A Purchase Request out of reach reads as not
+ * found rather than as forbidden, which keeps its existence private.
+ */
+const procurement = computed(() => {
+    const row = lot.value ? store.find(lot.value.procurement_id) : undefined
+
+    return row && store.canView(row, auth.userId, auth.ppmpRoleId) ? row : undefined
+})
 
 const projectItems = computed(() => ppmp.items.map((row) => ({ id: row.id, title: row.title })))
 

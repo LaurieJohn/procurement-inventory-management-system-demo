@@ -11,6 +11,7 @@ import { PR_STATUS } from '~/stores/purchase-request'
  */
 definePageMeta({ layout: 'admin' })
 
+const auth = useAuthStore()
 const store = usePurchaseRequestStore()
 
 const statusFilter = ref<number | ''>('')
@@ -22,7 +23,9 @@ const statusFilter = ref<number | ''>('')
  * what they returned or denied, not only what is still pending.
  */
 const listable = computed(() =>
-    store.allProcurements.filter((row) => row.procurement_status_id !== PR_STATUS.created),
+    store
+        .visibleTo(auth.userId, auth.ppmpRoleId)
+        .filter((row) => row.procurement_status_id !== PR_STATUS.created),
 )
 
 const filtered = computed(() =>

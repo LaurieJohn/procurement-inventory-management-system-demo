@@ -6,11 +6,21 @@ import { computed } from 'vue'
  * controls, and the lots it is broken into.
  */
 const route = useRoute()
+const auth = useAuthStore()
 const store = usePurchaseRequestStore()
 const modal = usePimsModal()
 
 const id = computed(() => Number(route.params.id))
-const procurement = computed(() => store.find(id.value))
+/**
+ * Reached by URL as easily as by link, so the same visibility rule the listing
+ * applies is checked here. Out of reach reads as not found rather than as
+ * forbidden, which keeps the request's existence private.
+ */
+const procurement = computed(() => {
+    const row = store.find(id.value)
+
+    return row && store.canView(row, auth.userId, auth.ppmpRoleId) ? row : undefined
+})
 
 const isLocked = computed(() => (procurement.value ? store.isLocked(procurement.value) : false))
 const isForResubmission = computed(() =>

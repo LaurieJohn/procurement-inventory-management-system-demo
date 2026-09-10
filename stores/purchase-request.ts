@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import {
+    PPMP_ROLE,
     disbursementTypes,
     ppmpModeProcurements,
     prTypes,
@@ -121,6 +122,52 @@ export const usePurchaseRequestStore = defineStore('purchase-request', {
 
         find: (state) => (id: number): Procurement | undefined =>
             state.procurements.find((row) => row.id === id),
+
+        /**
+         * The Purchase Requests one viewer is allowed to see.
+         *
+         * An Employee sees only what they raised themselves. A Unit Head sees
+         * everything raised from their own Unit, their own included. Every other
+         * role is one of the offices that review Purchase Requests, so it sees
+         * all of them.
+         *
+         * Applied wherever Purchase Requests are listed — the requester's page
+         * and the administration console alike — so the two cannot disagree.
+         */
+        visibleTo(): (viewerId: number, roleId: number) => Procurement[] {
+            return (viewerId: number, roleId: number) => {
+                if (roleId === PPMP_ROLE.employee) {
+                    return this.allProcurements.filter((row) => row.user_id === viewerId)
+                }
+
+                if (roleId === PPMP_ROLE.unitHead) {
+                    const unitId = users.find((user) => user.id === viewerId)?.office_unit_id ?? null
+
+                    if (unitId === null) {
+                        return []
+                    }
+
+                    const unitMembers = users
+                        .filter((user) => user.office_unit_id === unitId)
+                        .map((user) => user.id)
+
+                    return this.allProcurements.filter((row) => unitMembers.includes(row.user_id))
+                }
+
+                return this.allProcurements
+            }
+        },
+
+        /**
+         * Whether one Purchase Request is within a viewer's reach.
+         *
+         * The detail pages check this too: without it the listing would only be
+         * hiding rows a viewer could still reach by typing the URL.
+         */
+        canView(): (procurement: Procurement, viewerId: number, roleId: number) => boolean {
+            return (procurement: Procurement, viewerId: number, roleId: number) =>
+                this.visibleTo(viewerId, roleId).some((row) => row.id === procurement.id)
+        },
 
         findLot: (state) => (id: number): Lot | undefined =>
             state.lots.find((row) => row.id === id),
@@ -394,7 +441,14 @@ export const usePurchaseRequestStore = defineStore('purchase-request', {
 
         /* ----- Dashboard figures ----- */
 
-        summary(): {
+        /**
+         * The headline figures, counted over what this viewer may actually see
+         * so the numbers agree with the listing beneath them.
+         */
+        summaryFor(): (
+            viewerId: number,
+            roleId: number,
+        ) => {
             total: number
             drafts: number
             awaitingDecision: number
@@ -404,29 +458,35 @@ export const usePurchaseRequestStore = defineStore('purchase-request', {
             denied: number
             value: number
         } {
-            const rows = this.procurements
+            return (viewerId: number, roleId: number) => {
+                const rows = this.visibleTo(viewerId, roleId)
 
-            return {
-                total: rows.length,
-                drafts: rows.filter((row) => row.procurement_status_id === PR_STATUS.created).length,
-                awaitingDecision: rows.filter(
-                    (row) => row.procurement_status_id === PR_STATUS.submitted,
-                ).length,
-                inProgress: rows.filter((row) =>
-                    [
-                        PR_STATUS.unitHead,
-                        PR_STATUS.divisionFoHead,
-                        PR_STATUS.supplyOfficer,
-                        PR_STATUS.budgetOfficer,
-                        PR_STATUS.ord,
-                    ].includes(row.procurement_status_id as 6 | 7 | 8 | 9 | 10),
-                ).length,
-                approved: rows.filter((row) => row.procurement_status_id === PR_STATUS.approved).length,
-                returned: rows.filter(
-                    (row) => row.procurement_status_id === PR_STATUS.forResubmission,
-                ).length,
-                denied: rows.filter((row) => row.procurement_status_id === PR_STATUS.denied).length,
-                value: rows.reduce((sum, row) => sum + this.totalFor(row.id), 0),
+                return {
+                    total: rows.length,
+                    drafts: rows.filter((row) => row.procurement_status_id === PR_STATUS.created)
+                        .length,
+                    awaitingDecision: rows.filter(
+                        (row) => row.procurement_status_id === PR_STATUS.submitted,
+                    ).length,
+                    inProgress: rows.filter((row) =>
+                        [
+                            PR_STATUS.unitHead,
+                            PR_STATUS.divisionFoHead,
+                            PR_STATUS.supplyOfficer,
+                            PR_STATUS.budgetOfficer,
+                            PR_STATUS.ord,
+                        ].includes(row.procurement_status_id as 6 | 7 | 8 | 9 | 10),
+                    ).length,
+                    approved: rows.filter(
+                        (row) => row.procurement_status_id === PR_STATUS.approved,
+                    ).length,
+                    returned: rows.filter(
+                        (row) => row.procurement_status_id === PR_STATUS.forResubmission,
+                    ).length,
+                    denied: rows.filter((row) => row.procurement_status_id === PR_STATUS.denied)
+                        .length,
+                    value: rows.reduce((sum, row) => sum + this.totalFor(row.id), 0),
+                }
             }
         },
     },

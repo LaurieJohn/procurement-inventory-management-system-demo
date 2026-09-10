@@ -10,11 +10,21 @@ import { computed } from 'vue'
 definePageMeta({ layout: 'admin' })
 
 const route = useRoute()
+const auth = useAuthStore()
 const store = usePurchaseRequestStore()
 const ppmp = usePpmpStore()
 
 const lot = computed(() => store.findLot(Number(route.params.lot)))
-const procurement = computed(() => (lot.value ? store.find(lot.value.procurement_id) : undefined))
+/**
+ * Reached by URL as easily as by link, so the same visibility rule the listing
+ * applies is checked here too. A Purchase Request out of reach reads as not
+ * found rather than as forbidden, which keeps its existence private.
+ */
+const procurement = computed(() => {
+    const row = lot.value ? store.find(lot.value.procurement_id) : undefined
+
+    return row && store.canView(row, auth.userId, auth.ppmpRoleId) ? row : undefined
+})
 
 const items = computed(() => (lot.value ? store.itemsForLot(lot.value.id) : []))
 const totalQuantity = computed(() => items.value.reduce((sum, item) => sum + item.quantity, 0))

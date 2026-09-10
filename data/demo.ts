@@ -95,6 +95,18 @@ export const users: DemoUser[] = [
         ppmp_role_id: 7,
         is_super_admin: false,
     },
+    {
+        // Sits in the Unit Head's own unit, so the Unit Head sees a colleague's
+        // Purchase Request as well as their own.
+        id: 8,
+        name: 'Rowena F. Bautista',
+        first_name: 'Rowena',
+        last_name: 'Bautista',
+        area_office_id: 2,
+        office_unit_id: 6,
+        ppmp_role_id: 7,
+        is_super_admin: false,
+    },
 ]
 
 /** The account the demo opens as. */
@@ -447,7 +459,7 @@ export const procurements: Procurement[] = [
         created_at: '2026-08-26 13:40:00', updated_at: '2026-09-04 08:30:00',
     },
     {
-        id: 3, user_id: 1, disbursement_id: 4,
+        id: 3, user_id: 6, disbursement_id: 4,
         request_by: 'ARNEL D. MABINI', approved_by: 'ATTY. RICARDO M. ESTRELLA',
         title: 'Repair and Maintenance of Office Air-Conditioning Units',
         description: 'General cleaning, freon recharge and replacement of defective compressors for 14 split-type units.',
@@ -474,7 +486,7 @@ export const procurements: Procurement[] = [
         created_at: '2026-06-30 08:00:00', updated_at: '2026-07-21 16:45:00',
     },
     {
-        id: 5, user_id: 1, disbursement_id: 4,
+        id: 5, user_id: 8, disbursement_id: 4,
         request_by: 'ARNEL D. MABINI', approved_by: 'ATTY. RICARDO M. ESTRELLA',
         title: 'Lease of Venue for the Regional Planning Conference',
         description: 'Function room with accommodation for 90 participants for three days.',
@@ -487,8 +499,8 @@ export const procurements: Procurement[] = [
         created_at: '2026-08-19 14:25:00', updated_at: '2026-08-29 09:50:00',
     },
     {
-        id: 6, user_id: 1, disbursement_id: 4,
-        request_by: 'TERESA V. BUENAFLOR', approved_by: 'ATTY. RICARDO M. ESTRELLA',
+        id: 6, user_id: 7, disbursement_id: 4,
+        request_by: 'ARNEL D. MABINI', approved_by: 'ATTY. RICARDO M. ESTRELLA',
         title: 'Procurement of Construction Materials for the Records Room Partition',
         description: 'Materials for the partitioning of the records storage room at the Regional Office annex.',
         procurement_status_id: 3, pr_type_id: 3, mode_of_procurement_id: 2,

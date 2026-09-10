@@ -11,7 +11,7 @@ const auth = useAuthStore()
 const ppmp = usePpmpStore()
 const purchaseRequests = usePurchaseRequestStore()
 
-const prSummary = computed(() => purchaseRequests.summary)
+const prSummary = computed(() => purchaseRequests.summaryFor(auth.userId, auth.ppmpRoleId))
 const ppmpSummary = computed(() => ppmp.summary)
 </script>
 

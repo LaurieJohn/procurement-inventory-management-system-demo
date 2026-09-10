@@ -7,17 +7,22 @@ import { computed, ref } from 'vue'
  * Status is deliberately the second column so the state of every request reads
  * at a glance, without scanning to the end of the row.
  */
+const auth = useAuthStore()
 const store = usePurchaseRequestStore()
 const modal = usePimsModal()
+
+/**
+ * An Employee sees only their own Purchase Requests and a Unit Head only their
+ * Unit's; the reviewing offices see all of them.
+ */
+const visible = computed(() => store.visibleTo(auth.userId, auth.ppmpRoleId))
 
 const page = ref(1)
 const perPage = 10
 
-const lastPage = computed(() => Math.max(1, Math.ceil(store.allProcurements.length / perPage)))
+const lastPage = computed(() => Math.max(1, Math.ceil(visible.value.length / perPage)))
 
-const paged = computed(() =>
-    store.allProcurements.slice((page.value - 1) * perPage, page.value * perPage),
-)
+const paged = computed(() => visible.value.slice((page.value - 1) * perPage, page.value * perPage))
 
 /**
  * Each procurement status gets its own colour and icon so the column can be read
@@ -82,8 +87,8 @@ async function confirmDelete(id: number): Promise<void> {
                                 <div class="col-8">
                                     <h3 class="mb-0">List of Purchase Requests</h3>
                                     <p class="text-sm text-muted mb-0">
-                                        {{ store.procurements.length }}
-                                        {{ plural('request', store.procurements.length) }} in total
+                                        {{ visible.length }}
+                                        {{ plural('request', visible.length) }} in total
                                     </p>
                                 </div>
 

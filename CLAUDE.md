@@ -80,6 +80,12 @@ them there, not in a page.
   whose status is in `FIELD_OFFICE_LOCKED` can no longer touch its items.
 - Deciding on a submission is limited to the **Admin** and **Supply Officer**
   roles; every other role reads the same page without the controls.
+- **Who sees which Purchase Request** is `visibleTo(viewerId, roleId)` on the
+  store: an Employee sees only what they raised, a Unit Head sees their whole
+  Unit, and every other role sees all of them. Both listings, both dashboards
+  and every detail page go through it — a page that resolves a Purchase Request
+  from the URL must call `canView()`, or the listing is only hiding rows the
+  viewer can still reach by typing the address.
 
 ## Verifying a change
 
