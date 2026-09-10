@@ -3,15 +3,15 @@
  * The sidebar brand.
  *
  * This is a portfolio demo, not any organisation's system, so it carries no
- * agency logo — just the module it demonstrates and who built it.
+ * agency logo — just the module it demonstrates and who built it. The cart
+ * stands on its own rather than sitting in a tinted tile, which reads as a mark
+ * rather than as a placeholder.
  */
 </script>
 
 <template>
     <div class="brand">
-        <span class="brand__mark">
-            <i class="ni ni-cart"></i>
-        </span>
+        <i class="ni ni-cart brand__mark" aria-hidden="true"></i>
 
         <span class="brand__text">
             <span class="brand__name">PIMS</span>
@@ -31,16 +31,10 @@
 }
 
 .brand__mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     flex: 0 0 auto;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(87deg, #0038a8 0, #1171ef 100%);
-    color: #fff;
-    font-size: 1rem;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: #0038a8;
 }
 
 .brand__text {
