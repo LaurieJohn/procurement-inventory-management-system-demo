@@ -1,4 +1,7 @@
-# PIMS Demo — working notes
+# Development notes
+
+Conventions for working on this codebase — how it is put together, and the rules
+that are easy to break without noticing.
 
 This repository is a **front-end-only demonstration** of a Procurement and
 Inventory Management System (PIMS), built by LaurieJohn. It was migrated out of

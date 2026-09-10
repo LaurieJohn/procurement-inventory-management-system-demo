@@ -73,3 +73,6 @@ markup was changed in the migration — only the tooling underneath it.
 Bootstrap's own JavaScript is not loaded: dropdowns, collapsible sections and
 modals are driven by Vue instead, using the same class names so they look and
 animate the way Argon intends.
+
+Conventions for working on the code — the layout, the Argon rules and the
+workflow constants — are in [DEVELOPMENT.md](DEVELOPMENT.md).

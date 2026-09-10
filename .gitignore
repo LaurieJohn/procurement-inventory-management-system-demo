@@ -18,9 +18,6 @@ yarn-error.log
 !.env.example
 .DS_Store
 
-# Tooling
-.claude
-
 # Editors
 /.fleet
 /.idea
