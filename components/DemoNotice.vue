@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
                             <div class="demo-notice__links">
                                 <a
                                     href="https://ljar.vercel.app/"
-                                    class="btn btn-primary"
+                                    class="btn btn-outline-primary"
                                     target="_blank"
                                     rel="noopener"
                                 >
@@ -142,6 +142,15 @@ onBeforeUnmount(() => {
     display: block;
     /* Above the sidebar, which Argon puts at 1050. */
     z-index: 1080;
+}
+
+/*
+ * Wider than the 500px Bootstrap settles on, which left the notice a narrow
+ * column of text far taller than it was across. Nearer square reads as a
+ * greeting rather than a page.
+ */
+.demo-notice .modal-dialog {
+    max-width: 640px;
 }
 
 .demo-notice__backdrop {
