@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 /**
  * An Argon dropdown.
@@ -36,8 +36,64 @@ function onDocumentClick(event: MouseEvent): void {
     }
 }
 
+/** The scrolling table this dropdown sits in, if it sits in one at all. */
+function scroller(): HTMLElement | null {
+    return root.value?.closest<HTMLElement>('.table-responsive') ?? null
+}
+
+/**
+ * Make room in a scrolling table for the menu.
+ *
+ * A table that can scroll sideways clips whatever leaves it, and a row's own
+ * menu is one of those things — with a single row the menu is taller than the
+ * table it hangs out of, and its lower half was cut off. The table is grown by
+ * however far the menu overhangs, which leaves the sideways scroll alone;
+ * switching the clip off instead would let a wide table spill out of its card
+ * on a phone.
+ *
+ * Asks the table how much of it cannot be seen rather than measuring the menu
+ * against it. The menu's own box reports as fitting even when it does not, and
+ * the difference the table reports is the part actually being cut off.
+ *
+ * The padding is cleared before measuring so that a menu opening while another
+ * closes is measured against the table's own height, not a padded one.
+ */
+function makeRoomForMenu(): void {
+    const table = scroller()
+
+    if (!table) {
+        return
+    }
+
+    void nextTick(() => {
+        table.style.paddingBottom = ''
+
+        if (!table.querySelector('.dropdown-menu.show')) {
+            return
+        }
+
+        const hidden = table.scrollHeight - table.clientHeight
+
+        if (hidden > 0) {
+            table.style.paddingBottom = `${hidden + 8}px`
+        }
+    })
+}
+
+watch(open, makeRoomForMenu)
+
 onMounted(() => document.addEventListener('click', onDocumentClick))
-onBeforeUnmount(() => document.removeEventListener('click', onDocumentClick))
+
+onBeforeUnmount(() => {
+    document.removeEventListener('click', onDocumentClick)
+
+    // Leaving with the menu open would strand the extra room on the table.
+    const table = scroller()
+
+    if (table) {
+        table.style.paddingBottom = ''
+    }
+})
 </script>
 
 <template>
