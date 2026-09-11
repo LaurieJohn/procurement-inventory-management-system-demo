@@ -28,6 +28,24 @@ function roleLabel(roleId: number, isSuperAdmin: boolean): string {
     >
         <div class="container-fluid">
             <div class="collapse navbar-collapse">
+                <!-- The only toggler that is always reachable: the sidebar takes
+                     its own one off-canvas with it when it closes. -->
+                <div
+                    class="sidenav-toggler sidenav-toggler-dark mr-3"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Toggle the sidebar"
+                    @click="sidenav.toggle()"
+                    @keydown.enter.prevent="sidenav.toggle()"
+                    @keydown.space.prevent="sidenav.toggle()"
+                >
+                    <div class="sidenav-toggler-inner">
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                    </div>
+                </div>
+
                 <!-- Search form -->
                 <form class="navbar-search navbar-search-light form-inline mr-sm-3" @submit.prevent>
                     <div class="form-group mb-0">
@@ -41,17 +59,6 @@ function roleLabel(roleId: number, isSuperAdmin: boolean): string {
                 </form>
 
                 <ul class="navbar-nav align-items-center ml-md-auto">
-                    <li class="nav-item d-xl-none">
-                        <!-- Sidenav toggler, for the widths the sidebar hides at -->
-                        <div class="pr-3 sidenav-toggler sidenav-toggler-dark" @click="sidenav.toggle()">
-                            <div class="sidenav-toggler-inner">
-                                <i class="sidenav-toggler-line"></i>
-                                <i class="sidenav-toggler-line"></i>
-                                <i class="sidenav-toggler-line"></i>
-                            </div>
-                        </div>
-                    </li>
-
                     <li class="nav-item">
                         <AppDropdown align-right>
                             <template #trigger="{ toggle }">

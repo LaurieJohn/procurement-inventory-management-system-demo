@@ -140,3 +140,19 @@ body.sidenav-open {
         left: auto;
     }
 }
+
+/* ── Closing the sidebar ───────────────────────────────────────────────────
+   This theme carries an appended `#sidenav-main { width: 250px !important }`
+   override, which defeats Argon's 62px collapsed rail: the sidebar kept its
+   full width while the main content slid back underneath it, so closing it
+   buried the left of every page. Closing now takes it off-canvas altogether —
+   on a wide screen as well as a narrow one — and gives the page its width back.
+   The selector carries the same id so it outranks that override. */
+body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main {
+    transform: translateX(-100%);
+    box-shadow: none;
+}
+
+body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main + .main-content {
+    margin-left: 0 !important;
+}
