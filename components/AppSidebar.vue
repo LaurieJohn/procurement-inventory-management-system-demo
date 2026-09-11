@@ -9,7 +9,6 @@ import { computed, ref, watch } from 'vue'
  */
 const route = useRoute()
 const auth = useAuthStore()
-const sidenav = useSidenav()
 
 const ppmpActive = computed(() => route.path.startsWith('/PIMS/PPMP'))
 const purchaseRequestActive = computed(() => route.path.startsWith('/PIMS/purchase-request'))
@@ -34,21 +33,13 @@ watch(sectionActive, (active) => {
             <!-- Brand -->
             <!-- The header carries its own padding so the toggler is inset from
                  the sidebar edge instead of sitting on it. -->
+            <!-- The toggler lives in the top bar, not here: this header goes
+                 off-canvas with the sidebar, so a control inside it could close
+                 the sidebar but never reopen it. -->
             <div class="sidenav-header d-flex align-items-center px-3">
                 <NuxtLink to="/dashboard" class="navbar-brand p-0">
                     <AppBrand />
                 </NuxtLink>
-
-                <div class="ml-auto">
-                    <!-- Sidenav toggler (compact mode) -->
-                    <div class="sidenav-toggler d-none d-xl-block" @click="sidenav.toggle()">
-                        <div class="sidenav-toggler-inner">
-                            <i class="sidenav-toggler-line"></i>
-                            <i class="sidenav-toggler-line"></i>
-                            <i class="sidenav-toggler-line"></i>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="navbar-inner">

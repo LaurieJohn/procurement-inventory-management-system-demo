@@ -5,7 +5,6 @@ import { computed, ref, watch } from 'vue'
  * The PIMS administration sidebar, shown on every page under /PIMS/admin.
  */
 const route = useRoute()
-const sidenav = useSidenav()
 
 const ppmpAdminActive = computed(() => route.path.startsWith('/PIMS/admin/PPMP'))
 const prAdminActive = computed(() => route.path.startsWith('/PIMS/admin/purchase-request'))
@@ -35,21 +34,13 @@ watch(prAdminActive, (active) => {
             <!-- Brand -->
             <!-- The header carries its own padding so the toggler is inset from
                  the sidebar edge instead of sitting on it. -->
+            <!-- The toggler lives in the top bar, not here: this header goes
+                 off-canvas with the sidebar, so a control inside it could close
+                 the sidebar but never reopen it. -->
             <div class="sidenav-header d-flex align-items-center px-3">
                 <NuxtLink to="/PIMS/admin" class="navbar-brand p-0">
                     <AppBrand />
                 </NuxtLink>
-
-                <div class="ml-auto">
-                    <!-- Sidenav toggler (compact mode) -->
-                    <div class="sidenav-toggler d-none d-xl-block" @click="sidenav.toggle()">
-                        <div class="sidenav-toggler-inner">
-                            <i class="sidenav-toggler-line"></i>
-                            <i class="sidenav-toggler-line"></i>
-                            <i class="sidenav-toggler-line"></i>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="navbar-inner">
