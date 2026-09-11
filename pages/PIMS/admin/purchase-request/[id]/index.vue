@@ -583,64 +583,54 @@ function ppmpItemTitle(itemId: number | null): string {
         </div>
 
         <!-- Returning a Purchase Request is the one decision that must be explained -->
-        <div
-            class="modal fade"
-            :class="{ show: returnOpen }"
-            :style="{ display: returnOpen ? 'block' : 'none' }"
-            tabindex="-1"
-            role="dialog"
-        >
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Return for Resubmission</h5>
-                        <button type="button" class="close" @click="returnOpen = false">
-                            <span>&times;</span>
-                        </button>
-                    </div>
+        <AppModal :open="returnOpen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Return for Resubmission</h5>
+                    <button type="button" class="close" @click="returnOpen = false">
+                        <span>&times;</span>
+                    </button>
+                </div>
 
-                    <div class="modal-body">
-                        <p class="text-sm text-muted">
-                            The requester gets this Purchase Request back and can edit it again.
-                            Tell them what needs to change.
-                        </p>
+                <div class="modal-body">
+                    <p class="text-sm text-muted">
+                        The requester gets this Purchase Request back and can edit it again.
+                        Tell them what needs to change.
+                    </p>
 
-                        <div class="form-group mb-0">
-                            <label class="form-control-label" for="returnRemarks">
-                                Remarks
-                                <span v-if="remarksOffice" class="text-muted">
-                                    &mdash; recorded against {{ remarksOffice }}
-                                </span>
-                            </label>
+                    <div class="form-group mb-0">
+                        <label class="form-control-label" for="returnRemarks">
+                            Remarks
+                            <span v-if="remarksOffice" class="text-muted">
+                                &mdash; recorded against {{ remarksOffice }}
+                            </span>
+                        </label>
 
-                            <textarea
-                                id="returnRemarks"
-                                v-model="returnRemarks"
-                                class="form-control"
-                                :class="{ 'is-invalid': returnInvalid }"
-                                rows="4"
-                            ></textarea>
+                        <textarea
+                            id="returnRemarks"
+                            v-model="returnRemarks"
+                            class="form-control"
+                            :class="{ 'is-invalid': returnInvalid }"
+                            rows="4"
+                        ></textarea>
 
-                            <div v-if="returnInvalid" class="invalid-feedback d-block">
-                                Say what needs to change before returning this Purchase Request.
-                            </div>
+                        <div v-if="returnInvalid" class="invalid-feedback d-block">
+                            Say what needs to change before returning this Purchase Request.
                         </div>
                     </div>
+                </div>
 
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" @click="returnOpen = false">
-                            Cancel
-                        </button>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" @click="returnOpen = false">
+                        Cancel
+                    </button>
 
-                        <button type="button" class="btn btn-warning" @click="submitReturn">
-                            Return for Resubmission
-                        </button>
-                    </div>
+                    <button type="button" class="btn btn-warning" @click="submitReturn">
+                        Return for Resubmission
+                    </button>
                 </div>
             </div>
-        </div>
-
-        <div v-if="returnOpen" class="modal-backdrop fade show"></div>
+        </AppModal>
     </div>
 
     <NotFoundCard

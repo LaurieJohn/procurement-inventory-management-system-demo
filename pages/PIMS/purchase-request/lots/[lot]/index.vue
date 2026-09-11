@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 /** One lot of a Purchase Request, and the items inside it. */
 const route = useRoute()
@@ -33,6 +33,21 @@ const viewing = ref<number | null>(null)
 const viewedItem = computed(() =>
     viewing.value === null ? null : store.findItem(viewing.value) ?? null,
 )
+
+/**
+ * The item the dialog is showing.
+ *
+ * Held rather than read straight from `viewedItem`, which empties the moment
+ * Close is pressed: the dialog fades out now, and reading it live would strip
+ * the dialog bare for the length of the animation.
+ */
+const shownItem = ref<typeof viewedItem.value>(null)
+
+watch(viewedItem, (item) => {
+    if (item) {
+        shownItem.value = item
+    }
+})
 
 async function confirmDelete(itemId: number): Promise<void> {
     const confirmed = await modal.confirm({
@@ -292,86 +307,76 @@ async function confirmDelete(itemId: number): Promise<void> {
         </div>
 
         <!-- Item details -->
-        <div
-            class="modal fade"
-            :class="{ show: viewedItem !== null }"
-            :style="{ display: viewedItem !== null ? 'block' : 'none' }"
-            tabindex="-1"
-            role="dialog"
-        >
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content" v-if="viewedItem">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ viewedItem.item_name }}</h5>
-                        <button type="button" class="close" @click="viewing = null">
-                            <span>&times;</span>
-                        </button>
-                    </div>
+        <AppModal :open="viewedItem !== null" dialog-class="modal-lg">
+            <div v-if="shownItem" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ shownItem.item_name }}</h5>
+                    <button type="button" class="close" @click="viewing = null">
+                        <span>&times;</span>
+                    </button>
+                </div>
 
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped mb-0">
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 35%">Item Name</th>
-                                        <td>{{ viewedItem.item_name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Corresponding PPMP Project Item</th>
-                                        <td>
-                                            {{
-                                                viewedItem.ppmp_project_item_id
-                                                    ? (ppmp.findItem(viewedItem.ppmp_project_item_id)
-                                                          ?.title ?? 'Not found')
-                                                    : 'Not linked'
-                                            }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Item Description</th>
-                                        <td style="white-space: pre-line">
-                                            {{ viewedItem.item_description }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Unit</th>
-                                        <td>{{ store.unitName(viewedItem.unit_id) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Quantity</th>
-                                        <td>{{ count(viewedItem.quantity) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Unit Cost</th>
-                                        <td>{{ peso(viewedItem.unit_cost) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Unit Cost</th>
-                                        <td>{{ peso(viewedItem.total_unit_cost) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Supply Officer Remarks</th>
-                                        <td>{{ viewedItem.supply_officer_remarks ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Budget Officer Remarks</th>
-                                        <td>{{ viewedItem.budget_officer_remarks ?? '-' }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="viewing = null">
-                            Close
-                        </button>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped mb-0">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 35%">Item Name</th>
+                                    <td>{{ shownItem.item_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Corresponding PPMP Project Item</th>
+                                    <td>
+                                        {{
+                                            shownItem.ppmp_project_item_id
+                                                ? (ppmp.findItem(shownItem.ppmp_project_item_id)
+                                                      ?.title ?? 'Not found')
+                                                : 'Not linked'
+                                        }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Item Description</th>
+                                    <td style="white-space: pre-line">
+                                        {{ shownItem.item_description }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Unit</th>
+                                    <td>{{ store.unitName(shownItem.unit_id) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Quantity</th>
+                                    <td>{{ count(shownItem.quantity) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Unit Cost</th>
+                                    <td>{{ peso(shownItem.unit_cost) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Unit Cost</th>
+                                    <td>{{ peso(shownItem.total_unit_cost) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Supply Officer Remarks</th>
+                                    <td>{{ shownItem.supply_officer_remarks ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Budget Officer Remarks</th>
+                                    <td>{{ shownItem.budget_officer_remarks ?? '-' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div v-if="viewedItem" class="modal-backdrop fade show"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="viewing = null">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </AppModal>
     </div>
 
     <NotFoundCard v-else title="Lot not found" back-to="/PIMS/purchase-request" />

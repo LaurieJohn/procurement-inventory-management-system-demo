@@ -1,103 +1,73 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+
 /**
  * The shared PIMS confirmation / notice / success modals.
  *
- * Carries the markup the Blade partial used verbatim — static backdrop, centred
- * dialog, Cancel plus one coloured action — but shown and hidden by Vue rather
- * than by Bootstrap's own jQuery plugin, so the demo needs no jQuery at all.
+ * Carries the markup the Blade partial used verbatim — centred dialog, Cancel
+ * plus one coloured action — but shown and hidden by Vue rather than by
+ * Bootstrap's own jQuery plugin, so the demo needs no jQuery at all.
  */
 const modal = usePimsModal()
 const state = modal.state
+
+/**
+ * What the dialog is showing, held apart from the live state.
+ *
+ * The dialog fades out now rather than vanishing, and by the time it starts to
+ * go `state` has already been cleared — and may well have been filled in again
+ * for the next one, since confirming something usually reports a result a tick
+ * later. Read live, a success message would turn back into the confirmation it
+ * came from on its way off screen. This keeps the last thing worth showing.
+ */
+const shown = ref({ ...state })
+
+watch(state, () => {
+    if (state.kind !== null) {
+        shown.value = { ...state }
+    }
+})
 </script>
 
 <template>
-    <div>
-        <!-- Confirm an action -->
-        <div
-            class="modal fade"
-            :class="{ show: state.kind === 'confirm' }"
-            :style="{ display: state.kind === 'confirm' ? 'block' : 'none' }"
-            tabindex="-1"
-            role="dialog"
-        >
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ state.title }}</h5>
-                        <button type="button" class="close" @click="modal.dismiss(false)">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body text-center">{{ state.text }}</div>
-
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" @click="modal.dismiss(false)">
-                            {{ state.cancelText }}
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn"
-                            :class="`btn-${state.variant}`"
-                            @click="modal.dismiss(true)"
-                        >
-                            {{ state.confirmText }}
-                        </button>
-                    </div>
-                </div>
+    <AppModal :open="state.kind !== null">
+        <div class="modal-content" :class="{ 'border-success': shown.kind === 'success' }">
+            <!-- A completed action, which closes itself -->
+            <div v-if="shown.kind === 'success'" class="modal-body text-center py-4">
+                <h4 class="mb-0 font-weight-bold">{{ shown.text }}</h4>
             </div>
-        </div>
 
-        <!-- Report something that only needs acknowledging -->
-        <div
-            class="modal fade"
-            :class="{ show: state.kind === 'notice' }"
-            :style="{ display: state.kind === 'notice' ? 'block' : 'none' }"
-            tabindex="-1"
-            role="dialog"
-        >
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ state.title }}</h5>
-                        <button type="button" class="close" @click="modal.dismiss(false)">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body text-center">{{ state.text }}</div>
-
-                    <div class="modal-footer justify-content-center">
-                        <button
-                            type="button"
-                            class="btn"
-                            :class="`btn-${state.variant}`"
-                            @click="modal.dismiss(true)"
-                        >
-                            {{ state.dismissText }}
-                        </button>
-                    </div>
+            <!-- An action to confirm, or something that only needs acknowledging -->
+            <template v-else>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ shown.title }}</h5>
+                    <button type="button" class="close" @click="modal.dismiss(false)">
+                        <span>&times;</span>
+                    </button>
                 </div>
-            </div>
-        </div>
 
-        <!-- A completed action, which closes itself -->
-        <div
-            class="modal fade"
-            :class="{ show: state.kind === 'success' }"
-            :style="{ display: state.kind === 'success' ? 'block' : 'none' }"
-            tabindex="-1"
-        >
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-success">
-                    <div class="modal-body text-center py-4">
-                        <h4 class="mb-0 font-weight-bold">{{ state.text }}</h4>
-                    </div>
+                <div class="modal-body text-center">{{ shown.text }}</div>
+
+                <div class="modal-footer justify-content-center">
+                    <button
+                        v-if="shown.kind === 'confirm'"
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="modal.dismiss(false)"
+                    >
+                        {{ shown.cancelText }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn"
+                        :class="`btn-${shown.variant}`"
+                        @click="modal.dismiss(true)"
+                    >
+                        {{ shown.kind === 'confirm' ? shown.confirmText : shown.dismissText }}
+                    </button>
                 </div>
-            </div>
+            </template>
         </div>
-
-        <div v-if="state.kind" class="modal-backdrop fade show"></div>
-    </div>
+    </AppModal>
 </template>

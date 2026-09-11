@@ -369,56 +369,46 @@ async function confirmTransfer(): Promise<void> {
         <AppPagination v-model="page" :last-page="lastPage" />
 
         <!-- Transfer a project item to another office -->
-        <div
-            class="modal fade"
-            :class="{ show: transferring !== null }"
-            :style="{ display: transferring !== null ? 'block' : 'none' }"
-            tabindex="-1"
-            role="dialog"
-        >
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Transfer Project Item</h5>
-                        <button type="button" class="close" @click="transferring = null">
-                            <span>&times;</span>
-                        </button>
+        <AppModal :open="transferring !== null">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transfer Project Item</h5>
+                    <button type="button" class="close" @click="transferring = null">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-control-label">Division/Field Office</label>
+                        <select v-model.number="transfer.field_office" class="form-control">
+                            <option v-for="(name, id) in fieldOfficeMap" :key="id" :value="Number(id)">
+                                {{ name }}
+                            </option>
+                        </select>
                     </div>
 
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label class="form-control-label">Division/Field Office</label>
-                            <select v-model.number="transfer.field_office" class="form-control">
-                                <option v-for="(name, id) in fieldOfficeMap" :key="id" :value="Number(id)">
-                                    {{ name }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group mb-0">
-                            <label class="form-control-label">Unit</label>
-                            <select v-model="transfer.unit" class="form-control">
-                                <option :value="null">No unit</option>
-                                <option v-for="unit in officeUnits" :key="unit.id" :value="unit.id">
-                                    {{ unit.name }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" @click="transferring = null">
-                            Cancel
-                        </button>
-
-                        <button type="button" class="btn btn-primary" @click="confirmTransfer">
-                            Transfer
-                        </button>
+                    <div class="form-group mb-0">
+                        <label class="form-control-label">Unit</label>
+                        <select v-model="transfer.unit" class="form-control">
+                            <option :value="null">No unit</option>
+                            <option v-for="unit in officeUnits" :key="unit.id" :value="unit.id">
+                                {{ unit.name }}
+                            </option>
+                        </select>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div v-if="transferring !== null" class="modal-backdrop fade show"></div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" @click="transferring = null">
+                        Cancel
+                    </button>
+
+                    <button type="button" class="btn btn-primary" @click="confirmTransfer">
+                        Transfer
+                    </button>
+                </div>
+            </div>
+        </AppModal>
     </div>
 </template>
