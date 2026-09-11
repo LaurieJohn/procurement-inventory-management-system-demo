@@ -56,7 +56,7 @@ function ppmpItemTitle(itemId: number | null): string {
         <div class="container-fluid mt--8">
             <div class="row">
                 <div class="col-xl-4 col-md-6">
-                    <div class="card card-stats bg-gradient-blue overflow-hidden">
+                    <div class="card card-stats bg-gradient-orange overflow-hidden">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-white mb-0">Number of Items</h5>
                             <span class="h1 font-weight-bold mb-0 text-white">{{ items.length }}</span>
@@ -65,7 +65,7 @@ function ppmpItemTitle(itemId: number | null): string {
                 </div>
 
                 <div class="col-xl-4 col-md-6">
-                    <div class="card card-stats bg-gradient-blue overflow-hidden">
+                    <div class="card card-stats bg-gradient-orange overflow-hidden">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-white mb-0">
                                 Total Quantity of Item
@@ -78,7 +78,7 @@ function ppmpItemTitle(itemId: number | null): string {
                 </div>
 
                 <div class="col-xl-4 col-md-6">
-                    <div class="card card-stats bg-gradient-blue overflow-hidden">
+                    <div class="card card-stats bg-gradient-orange overflow-hidden">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-white mb-0">Total</h5>
                             <span class="h1 font-weight-bold mb-0 text-white">{{ peso(itemTotal) }}</span>
