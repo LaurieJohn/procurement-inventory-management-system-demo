@@ -53,3 +53,17 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocumentClick))
         </div>
     </div>
 </template>
+
+<style scoped>
+/*
+ * The menu is positioned against the trigger, so its shrink-to-fit width is
+ * capped by however wide that trigger happens to be. The account trigger is
+ * only the avatar once its name is hidden on a phone, which squeezed the menu
+ * to about 50px and left its contents spilling off the screen. A floor fixes
+ * the width; the ceiling keeps a right-aligned menu inside the viewport.
+ */
+.dropdown-menu {
+    min-width: 13rem;
+    max-width: calc(100vw - 1.5rem);
+}
+</style>
