@@ -170,7 +170,3 @@ body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main + .main-content {
 body.demo-notice-open {
     overflow: hidden;
 }
-
-.demo-notice + .modal-backdrop {
-    z-index: 1070;
-}
