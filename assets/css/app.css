@@ -170,3 +170,19 @@ body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main + .main-content {
 body.demo-notice-open {
     overflow: hidden;
 }
+
+/*
+ * Each of these cards carries an oversized icon behind it as a watermark, in
+ * white at a low opacity. White reads against the deep blue the office-facing
+ * pages use, but the console's orange is light enough that it all but vanishes
+ * — the silhouettes looked as though they had been taken out altogether.
+ *
+ * Going dark restores it from the other direction. Black rather than a softer
+ * navy because the opacity is left alone: each card picked its own, and the
+ * largest watermark is deliberately the faintest of them. The `!important` is
+ * to beat `.text-white`, which the icons carry and which is `!important` too.
+ */
+.bg-gradient-orange i.position-absolute,
+.bg-gradient-orange .pims-stat__watermark {
+    color: #000 !important;
+}
