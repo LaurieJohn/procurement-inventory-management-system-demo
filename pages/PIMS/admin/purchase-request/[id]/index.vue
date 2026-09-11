@@ -200,7 +200,7 @@ function ppmpItemTitle(itemId: number | null): string {
         <div class="container-fluid mt--6">
             <div class="row">
                 <div class="col-xl-8">
-                    <div class="card bg-gradient-blue border-0">
+                    <div class="card bg-gradient-orange border-0">
                         <div class="card-body position-relative">
                             <i
                                 class="ni ni-box-2 text-white position-absolute"
@@ -433,7 +433,7 @@ function ppmpItemTitle(itemId: number | null): string {
                 <div class="col-xl-4">
                     <div class="row">
                         <div class="col-xl-12 col-md-6">
-                            <div class="card card-stats bg-gradient-blue">
+                            <div class="card card-stats bg-gradient-orange">
                                 <div class="card-body position-relative">
                                     <i
                                         class="ni ni-tag text-white position-absolute pr-stat__watermark"
@@ -449,7 +449,7 @@ function ppmpItemTitle(itemId: number | null): string {
                         </div>
 
                         <div class="col-xl-12 col-md-6">
-                            <div class="card card-stats bg-gradient-blue">
+                            <div class="card card-stats bg-gradient-orange">
                                 <div class="card-body position-relative">
                                     <i
                                         class="ni ni-briefcase-24 text-white position-absolute pr-stat__watermark"
@@ -471,7 +471,7 @@ function ppmpItemTitle(itemId: number | null): string {
                         </div>
 
                         <div class="col-xl-12 col-md-6">
-                            <div class="card card-stats bg-gradient-blue">
+                            <div class="card card-stats bg-gradient-orange">
                                 <div class="card-body position-relative">
                                     <i
                                         class="ni ni-cart text-white position-absolute pr-stat__watermark"
@@ -489,7 +489,7 @@ function ppmpItemTitle(itemId: number | null): string {
                         </div>
 
                         <div class="col-xl-12 col-md-6">
-                            <div class="card card-stats bg-gradient-blue">
+                            <div class="card card-stats bg-gradient-orange">
                                 <div class="card-body position-relative">
                                     <i
                                         class="ni ni-money-coins text-white position-absolute pr-stat__watermark"

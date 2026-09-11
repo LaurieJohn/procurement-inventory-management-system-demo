@@ -6,10 +6,26 @@ import type { Ppmp } from '~/data/demo'
 /**
  * The PPMP header card: what the plan is, and the actions that move it along.
  *
- * Shared by the requester page and the admin one — the plan's status
- * transitions are the same wherever they are triggered from.
+ * Shared by the requester page and the admin one, but they are not the same
+ * card. Only the console offers the plan's status transitions; the requester
+ * page reports where the plan stands and leaves it there.
  */
-const props = defineProps<{ plan: Ppmp }>()
+const props = withDefaults(
+    defineProps<{
+        plan: Ppmp
+
+        /**
+         * Rendered inside the administration console.
+         *
+         * Moving a plan along belongs there and nowhere else, so the
+         * office-facing page shows where a plan stands without offering to
+         * change it. The console also wears orange, which is how the demo
+         * tells the two views apart at a glance.
+         */
+        admin?: boolean
+    }>(),
+    { admin: false },
+)
 
 const auth = useAuthStore()
 const store = usePpmpStore()
@@ -30,10 +46,14 @@ interface PlanAction {
 
 /** Which transitions this viewer may make from the plan's current status. */
 const planActions = computed<PlanAction[]>(() => {
+    if (!props.admin) {
+        return []
+    }
+
     const actions: PlanAction[] = []
     const canManage = [PPMP_ROLE.admin, PPMP_ROLE.supplyOfficer].includes(role.value as 1 | 4)
 
-    if (props.plan.status_id === 1) {
+    if (props.plan.status_id === 1 && auth.canClosePpmp) {
         actions.push({
             key: 'submit',
             label: 'Close PPMP for reviewing',
@@ -93,6 +113,12 @@ const canReviseBudget = computed(
 )
 
 async function runPlanAction(action: PlanAction): Promise<void> {
+    // The dropdown only offers what the viewer may do, and this says so again
+    // rather than trusting the button that was clicked.
+    if (!planActions.value.some((offered) => offered.key === action.key)) {
+        return
+    }
+
     const confirmed = await modal.confirm({
         title: action.title,
         text: action.message,
@@ -117,7 +143,10 @@ async function exportExcel(): Promise<void> {
 </script>
 
 <template>
-    <div class="card bg-gradient-blue border-0 shadow-sm mb-4 position-relative overflow-hidden">
+    <div
+        class="card border-0 shadow-sm mb-4 position-relative overflow-hidden"
+        :class="admin ? 'bg-gradient-orange' : 'bg-gradient-blue'"
+    >
         <i
             class="ni ni-folder-17 text-white position-absolute"
             style="font-size: 11rem; right: 15px; top: 100px; opacity: 0.25"

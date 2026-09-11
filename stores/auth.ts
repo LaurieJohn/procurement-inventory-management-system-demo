@@ -39,6 +39,16 @@ export const useAuthStore = defineStore('auth', {
             return [PPMP_ROLE.admin, PPMP_ROLE.supplyOfficer].includes(this.ppmpRoleId as 1 | 4)
         },
 
+        /**
+         * Closing a plan for review is the Super Admin's and the Supply
+         * Designate's to make. It locks every participating Division/Field
+         * Office out of its own project items, so it does not sit with the
+         * offices whose work it stops.
+         */
+        canClosePpmp(): boolean {
+            return [PPMP_ROLE.admin, PPMP_ROLE.supplyDesignate].includes(this.ppmpRoleId as 1 | 5)
+        },
+
         /** Admin and Supply Officer decide on submissions and create plans. */
         canManagePpmp(): boolean {
             return [PPMP_ROLE.admin, PPMP_ROLE.supplyOfficer].includes(this.ppmpRoleId as 1 | 4)
