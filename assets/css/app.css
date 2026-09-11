@@ -126,18 +126,27 @@ body.sidenav-open {
    for the avatar once its name is hidden, leaving the menu's contents spilling
    off the screen. Measured from the trigger's right edge instead, so the menu
    opens inwards and stays on screen. */
-@media (max-width: 575.98px) {
-    .navbar-top .nav-item .dropdown .dropdown-menu {
-        width: auto;
-        min-width: 13rem;
-        max-width: calc(100vw - 1.5rem);
+@media (max-width: 767.98px) {
+    /* Below md the icons sit at the leading edge of the bar, so a menu measured
+       from its own trigger runs off one side or the other — off the right for
+       the account menu, off the left for the shorter-travelling bell. Anchoring
+       to the navbar instead makes every one of them a full-width sheet that
+       drops beneath the bar, which is what Argon's own 94%-width rule was
+       reaching for before our wrapper became the measuring stick. */
+    .navbar-top {
+        position: relative;
     }
 
-    /* That same block pins the menu to the left of its trigger, which sends a
-       right-aligned menu off the edge. Re-assert the alignment over it. */
-    .navbar-top .nav-item .dropdown .dropdown-menu-right {
-        right: 0;
-        left: auto;
+    .navbar-top .nav-item .dropdown {
+        position: static;
+    }
+
+    .navbar-top .nav-item .dropdown .dropdown-menu {
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+        min-width: 0;
+        max-width: none;
     }
 }
 
