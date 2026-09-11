@@ -57,7 +57,12 @@ function ppmpItemTitle(itemId: number | null): string {
             <div class="row">
                 <div class="col-xl-4 col-md-6">
                     <div class="card card-stats bg-gradient-orange overflow-hidden">
-                        <div class="card-body">
+                        <div class="card-body position-relative">
+                            <i
+                                class="ni ni-cart text-white position-absolute lot-stat__watermark"
+                                aria-hidden="true"
+                            ></i>
+
                             <h5 class="card-title text-uppercase text-white mb-0">Number of Items</h5>
                             <span class="h1 font-weight-bold mb-0 text-white">{{ items.length }}</span>
                         </div>
@@ -66,7 +71,12 @@ function ppmpItemTitle(itemId: number | null): string {
 
                 <div class="col-xl-4 col-md-6">
                     <div class="card card-stats bg-gradient-orange overflow-hidden">
-                        <div class="card-body">
+                        <div class="card-body position-relative">
+                            <i
+                                class="ni ni-box-2 text-white position-absolute lot-stat__watermark"
+                                aria-hidden="true"
+                            ></i>
+
                             <h5 class="card-title text-uppercase text-white mb-0">
                                 Total Quantity of Item
                             </h5>
@@ -79,7 +89,12 @@ function ppmpItemTitle(itemId: number | null): string {
 
                 <div class="col-xl-4 col-md-6">
                     <div class="card card-stats bg-gradient-orange overflow-hidden">
-                        <div class="card-body">
+                        <div class="card-body position-relative">
+                            <i
+                                class="ni ni-money-coins text-white position-absolute lot-stat__watermark"
+                                aria-hidden="true"
+                            ></i>
+
                             <h5 class="card-title text-uppercase text-white mb-0">Total</h5>
                             <span class="h1 font-weight-bold mb-0 text-white">{{ peso(itemTotal) }}</span>
                         </div>
@@ -159,3 +174,18 @@ function ppmpItemTitle(itemId: number | null): string {
 
     <NotFoundCard v-else title="Lot not found" back-to="/PIMS/admin/purchase-request" />
 </template>
+
+<style scoped>
+/*
+ * The oversized icon each of these cards carries behind it, on the same terms
+ * as the Purchase Request page the lot belongs to. The card clips it.
+ */
+.lot-stat__watermark {
+    font-size: 6rem;
+    right: 15px;
+    top: 65%;
+    transform: translateY(-50%);
+    opacity: 0.18;
+    pointer-events: none;
+}
+</style>
