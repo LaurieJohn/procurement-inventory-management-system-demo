@@ -71,27 +71,34 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="modal-footer demo-notice__footer">
-                        <a
-                            href="https://ljar.vercel.app/"
-                            class="btn btn-primary"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            <i class="ni ni-single-02 mr-1" aria-hidden="true"></i>
-                            Visit my Portfolio
-                        </a>
+                        <div class="demo-notice__links">
+                            <a
+                                href="https://ljar.vercel.app/"
+                                class="btn btn-primary"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <i class="ni ni-single-02 mr-1" aria-hidden="true"></i>
+                                Visit my Portfolio
+                            </a>
 
-                        <a
-                            href="https://ljar.vercel.app/projects/pims"
-                            class="btn btn-outline-primary"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            <i class="ni ni-single-copy-04 mr-1" aria-hidden="true"></i>
-                            Read the Case Study
-                        </a>
+                            <a
+                                href="https://ljar.vercel.app/projects/pims"
+                                class="btn btn-outline-primary"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <i class="ni ni-single-copy-04 mr-1" aria-hidden="true"></i>
+                                Read the Case Study
+                            </a>
+                        </div>
 
-                        <button type="button" class="btn btn-secondary" autofocus @click="open = false">
+                        <button
+                            type="button"
+                            class="btn btn-secondary demo-notice__close"
+                            autofocus
+                            @click="open = false"
+                        >
                             Close
                         </button>
                     </div>
@@ -111,20 +118,36 @@ onBeforeUnmount(() => {
     z-index: 1080;
 }
 
+/* The two links invite you somewhere; Close just dismisses. Setting them on
+   separate rows with real space between keeps the dismissal from reading as a
+   third option alongside them. */
 .demo-notice__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.demo-notice__links {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     justify-content: center;
 }
 
-.demo-notice__footer > .btn {
+.demo-notice__footer .btn {
     margin: 0;
 }
 
 @media (max-width: 575.98px) {
     /* Stacked full-width buttons beat three cramped ones on a phone. */
-    .demo-notice__footer > .btn {
+    .demo-notice__links {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .demo-notice__links > .btn,
+    .demo-notice__close {
         width: 100%;
     }
 }
