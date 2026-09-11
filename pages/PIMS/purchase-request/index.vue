@@ -84,7 +84,7 @@ async function confirmDelete(id: number): Promise<void> {
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="row align-items-center">
-                                <div class="col-8">
+                                <div class="col-12 col-md-8">
                                     <h3 class="mb-0">List of Purchase Requests</h3>
                                     <p class="text-sm text-muted mb-0">
                                         {{ visible.length }}
@@ -92,7 +92,7 @@ async function confirmDelete(id: number): Promise<void> {
                                     </p>
                                 </div>
 
-                                <div class="col-4 text-right">
+                                <div class="col-12 col-md-4 text-md-right mt-3 mt-md-0">
                                     <NuxtLink
                                         to="/PIMS/purchase-request/create"
                                         class="btn btn-primary btn-round btn-icon"
@@ -329,6 +329,9 @@ async function confirmDelete(id: number): Promise<void> {
     font-weight: 600;
     line-height: 1.4;
     white-space: normal;
+    /* The table scrolls sideways on a narrow screen, so the title column is
+       given room rather than being compressed into a column of single words. */
+    min-width: 13rem;
     max-width: 22rem;
     display: inline-block;
 }

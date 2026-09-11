@@ -30,3 +30,92 @@
 .dropdown-item {
     cursor: pointer;
 }
+
+/* ── Sidebar overlay (below Argon's xl breakpoint) ─────────────────────────
+   There is no room for the sidebar beside the content on a phone, so it slides
+   over the page instead. The backdrop dims what is behind it and gives a large
+   target to close it with. */
+.sidenav-backdrop {
+    position: fixed;
+    inset: 0;
+    /* Under .sidenav (1050) so the sidebar itself stays interactive. */
+    z-index: 1040;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+body.sidenav-open {
+    overflow: hidden;
+}
+
+/* ── Motion ────────────────────────────────────────────────────────────────
+   Enough to show that one screen replaced another, and short enough not to sit
+   between the user and the page. */
+.backdrop-enter-active,
+.backdrop-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.backdrop-enter-from,
+.backdrop-leave-to {
+    opacity: 0;
+}
+
+.page-enter-active {
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.page-leave-active {
+    transition:
+        opacity 0.14s ease,
+        transform 0.14s ease;
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-4px);
+}
+
+/* A transform on the page wrapper would reparent any fixed-position descendant,
+   so it is cleared the moment the transition ends rather than left at none. */
+.page-enter-to,
+.page-leave-from {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .backdrop-enter-active,
+    .backdrop-leave-active,
+    .page-enter-active,
+    .page-leave-active {
+        transition: none;
+    }
+
+    .page-enter-from,
+    .page-leave-to {
+        transform: none;
+    }
+}
+
+/* Tables scroll inside their own box on a phone; tightening the cells keeps
+   rows from growing taller than the screen. */
+@media (max-width: 767.98px) {
+    .table th,
+    .table td {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+}
+
+/* The brand is text rather than the image Argon shipped, and text does not
+   obey the sidebar's 62px cap the way an img with max-width does. Without this
+   the words spill out of a sidebar that is supposed to be off-screen. */
+.sidenav-header {
+    overflow: hidden;
+}

@@ -141,7 +141,7 @@ async function confirmTransfer(): Promise<void> {
 
 <template>
     <div class="card shadow-sm">
-        <div class="card-header d-flex align-items-center">
+        <div class="card-header d-flex flex-wrap align-items-center">
             <h4 class="mb-0">List of Project Items on this PPMP</h4>
 
             <NuxtLink

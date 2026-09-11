@@ -1,6 +1,7 @@
 <template>
     <div>
         <AppSidebar />
+        <SidenavBackdrop />
 
         <div id="panel" class="main-content">
             <AppNavbar />

@@ -50,7 +50,7 @@ const modules = [
             <div class="container-fluid">
                 <div class="header-body">
                     <div class="row align-items-center py-4">
-                        <div class="col-lg-6 col-7">
+                        <div class="col-12 col-lg-6">
                             <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
                             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
@@ -62,7 +62,7 @@ const modules = [
                             </nav>
                         </div>
 
-                        <div class="col-lg-6 col-5 text-right">
+                        <div class="col-12 col-lg-6 text-lg-right mt-2 mt-lg-0">
                             <span class="text-white-50 text-sm">{{ today }}</span>
                         </div>
                     </div>

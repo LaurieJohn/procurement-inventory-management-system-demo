@@ -353,6 +353,9 @@ function showAwaiting(): void {
     font-weight: 600;
     line-height: 1.4;
     white-space: normal;
+    /* The table scrolls sideways on a narrow screen, so the title column is
+       given room rather than being compressed into a column of single words. */
+    min-width: 13rem;
     max-width: 22rem;
     display: inline-block;
 }

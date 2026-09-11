@@ -28,7 +28,7 @@ withDefaults(
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
-                    <div class="col-lg-8 col-7">
+                    <div class="col-12 col-lg-8">
                         <template v-if="backTo">
                             <NuxtLink :to="backTo" class="btn btn-secondary btn-sm mb-2">
                                 <i class="fas fa-arrow-left"></i> Back

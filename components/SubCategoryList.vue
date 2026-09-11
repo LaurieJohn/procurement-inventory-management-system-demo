@@ -78,7 +78,7 @@ function categoryLabel(id: number, name: string): string {
 
 <template>
     <div class="card shadow-sm">
-        <div class="card-header pb-3 d-flex align-items-center justify-content-between">
+        <div class="card-header pb-3 d-flex flex-wrap align-items-center justify-content-between">
             <p class="mb-0">List of all current Sub-Categories</p>
 
             <NuxtLink v-if="props.manageable" :to="`${props.basePath}/create`" class="btn btn-success">

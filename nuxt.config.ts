@@ -20,12 +20,13 @@ export default defineNuxtConfig({
     css: ['~/assets/css/app.css'],
 
     app: {
+        // A short cross-fade between pages, so a navigation reads as a change of
+        // screen rather than a redraw.
+        pageTransition: { name: 'page', mode: 'out-in' },
+
         head: {
             title: 'PIMS — Demo by LaurieJohn',
             htmlAttrs: { lang: 'en' },
-            // Argon expands the sidebar and shifts the content across from these
-            // two classes; its own jQuery script used to set them from a cookie.
-            bodyAttrs: { class: 'g-sidenav-show g-sidenav-pinned' },
             meta: [
                 { charset: 'utf-8' },
                 { name: 'viewport', content: 'width=device-width, initial-scale=1, shrink-to-fit=no' },

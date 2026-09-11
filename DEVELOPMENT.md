@@ -62,6 +62,20 @@ composables/         useFormat (peso/date/plural), usePimsModal, useSidenav.
 - **Money and dates go through `composables/useFormat.ts`** — `peso()`,
   `amount()`, `count()`, `longDate()`, `longDateTime()`, `monthYear()`,
   `plural()`. They are auto-imported.
+- **The sidebar is off-canvas below Argon's xl breakpoint (1200px).** It has
+  nowhere to sit beside the content on a phone, so `useSidenav` closes it by
+  default there and the navbar toggler slides it over the page with a backdrop.
+  Anything added to the sidebar header must survive being clipped to the 62px
+  rail — `.sidenav-header` hides its overflow, because text does not respect
+  that cap the way the image Argon shipped did.
+- **A card header that pairs a title with a button stacks on small screens.**
+  Use `col-12 col-md-8` / `col-12 col-md-4 text-md-right`, not `col-8` /
+  `col-4`: a fixed split leaves the button around 100px wide on a phone and its
+  label wraps into an unreadable block.
+- **Motion is short and it is skippable.** Page transitions are the `page-*`
+  classes in `assets/css/app.css`, wired up by `app.pageTransition` in the Nuxt
+  config. Every transition is disabled under `prefers-reduced-motion: reduce`;
+  keep it that way.
 - **Assets are served locally, never from a CDN.** The theme lives in
   `public/argon` and has been trimmed to what these pages actually use; adding
   a CDN `<link>` or `<script>` would break the offline-capable build.

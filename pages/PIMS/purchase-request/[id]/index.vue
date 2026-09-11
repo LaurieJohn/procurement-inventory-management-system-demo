@@ -657,11 +657,11 @@ function lotStats(lotId: number) {
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12 col-sm-6">
                                     <h3 class="mb-0">List of Lots</h3>
                                 </div>
 
-                                <div class="col-6 text-right">
+                                <div class="col-12 col-sm-6 text-sm-right mt-3 mt-sm-0">
                                     <button
                                         v-if="!isLocked"
                                         type="button"
