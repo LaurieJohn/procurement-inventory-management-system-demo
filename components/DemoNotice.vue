@@ -1,0 +1,131 @@
+<script setup lang="ts">
+import { onBeforeUnmount, ref, watch } from 'vue'
+
+/**
+ * The notice every visitor meets on arrival.
+ *
+ * It says plainly what this is, so nobody mistakes a portfolio piece for a
+ * system in service, and it points at the write-up behind it.
+ *
+ * Deliberately not dismissible by clicking away or pressing Escape: it is shown
+ * once per visit and asks for one deliberate press, which is the whole reason
+ * it is here rather than being a banner that gets scrolled past.
+ */
+const open = ref(true)
+
+/** Stops the page behind scrolling while the notice is up. */
+watch(
+    open,
+    (isOpen) => {
+        if (import.meta.client) {
+            document.body.classList.toggle('demo-notice-open', isOpen)
+        }
+    },
+    { immediate: true },
+)
+
+onBeforeUnmount(() => {
+    if (import.meta.client) {
+        document.body.classList.remove('demo-notice-open')
+    }
+})
+</script>
+
+<template>
+    <div v-if="open">
+        <div
+            class="modal fade show demo-notice"
+            tabindex="-1"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="demo-notice-title"
+        >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="demo-notice-title" class="modal-title">
+                            <i class="ni ni-cart text-primary mr-2" aria-hidden="true"></i>
+                            This is a demo
+                        </h5>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>
+                            You are looking at a front-end demonstration of the
+                            <strong>Procurement and Inventory Management System (PIMS)</strong>,
+                            a module of a wider Central System.
+                        </p>
+
+                        <p>
+                            This demo is built with <strong>Nuxt</strong> and
+                            <strong>Vue</strong>, and it runs entirely in your browser — there is
+                            no server and no database behind it. The working system it is modelled
+                            on is built with <strong>PHP</strong>, <strong>Laravel</strong>,
+                            <strong>Blade</strong> and <strong>MySQL</strong>.
+                        </p>
+
+                        <p class="mb-0 text-muted text-sm">
+                            Every name, office and amount you will see here is invented. Nothing is
+                            saved: reload the page and the demo starts over.
+                        </p>
+                    </div>
+
+                    <div class="modal-footer demo-notice__footer">
+                        <a
+                            href="https://ljar.vercel.app/"
+                            class="btn btn-primary"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ni ni-single-02 mr-1" aria-hidden="true"></i>
+                            Visit my Portfolio
+                        </a>
+
+                        <a
+                            href="https://ljar.vercel.app/projects/pims"
+                            class="btn btn-outline-primary"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ni ni-single-copy-04 mr-1" aria-hidden="true"></i>
+                            Read the Case Study
+                        </a>
+
+                        <button type="button" class="btn btn-secondary" autofocus @click="open = false">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No click handler: the notice closes from its own button only. -->
+        <div class="modal-backdrop fade show"></div>
+    </div>
+</template>
+
+<style scoped>
+/* Above the sidebar, which Argon puts at 1050. */
+.demo-notice {
+    display: block;
+    z-index: 1080;
+}
+
+.demo-notice__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.demo-notice__footer > .btn {
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    /* Stacked full-width buttons beat three cramped ones on a phone. */
+    .demo-notice__footer > .btn {
+        width: 100%;
+    }
+}
+</style>

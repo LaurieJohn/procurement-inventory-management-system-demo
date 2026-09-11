@@ -165,3 +165,12 @@ body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main {
 body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main + .main-content {
     margin-left: 0 !important;
 }
+
+/* The arrival notice sits over everything and holds the page still behind it. */
+body.demo-notice-open {
+    overflow: hidden;
+}
+
+.demo-notice + .modal-backdrop {
+    z-index: 1070;
+}

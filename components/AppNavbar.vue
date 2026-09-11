@@ -11,6 +11,20 @@ import { ppmpRoles } from '~/data/reference'
 const auth = useAuthStore()
 const sidenav = useSidenav()
 
+/**
+ * Switching account always returns to the dashboard.
+ *
+ * Roles see different things, and some see less: an Employee left standing on
+ * an administration page the previous account had open would be looking at a
+ * screen they are not entitled to. The dashboard is the one page every role can
+ * open.
+ */
+async function signInAs(userId: number): Promise<void> {
+    auth.signInAs(userId)
+
+    await navigateTo('/dashboard')
+}
+
 /** The role line under each account in the switcher. */
 function roleLabel(roleId: number, isSuperAdmin: boolean): string {
     if (isSuperAdmin) {
@@ -122,7 +136,7 @@ function roleLabel(roleId: number, isSuperAdmin: boolean): string {
                                 :key="account.id"
                                 href="#"
                                 class="dropdown-item"
-                                @click.prevent="auth.signInAs(account.id)"
+                                @click.prevent="signInAs(account.id)"
                             >
                                 <i
                                     class="ni"
