@@ -156,7 +156,8 @@ async function save(): Promise<void> {
     saving.value = false
     modal.success('Project Item details updated successfully')
 
-    await navigateTo(`/PIMS/PPMP/${ppmpId.value}`)
+    // Reached from the console, so saving hands the plan back to it.
+    await navigateTo(`/PIMS/admin/PPMP/${ppmpId.value}`)
 }
 </script>
 
@@ -462,7 +463,7 @@ async function save(): Promise<void> {
                             </div>
 
                             <div class="text-center card-footer bg-transparent">
-                                <NuxtLink :to="`/PIMS/PPMP/${plan.id}`" class="btn btn-secondary">
+                                <NuxtLink :to="`/PIMS/admin/PPMP/${plan.id}`" class="btn btn-secondary">
                                     Back
                                 </NuxtLink>
 
