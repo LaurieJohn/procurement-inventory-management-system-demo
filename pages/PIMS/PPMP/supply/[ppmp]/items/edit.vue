@@ -164,10 +164,11 @@ async function save(): Promise<void> {
     <div v-if="plan">
         <PageHeader
             title="Procurement and Inventory Management System (PIMS)"
-            :back-to="`/PIMS/PPMP/${plan.id}`"
+            :back-to="`/PIMS/admin/PPMP/${plan.id}`"
             :crumbs="[
-                { to: '/PIMS/PPMP', icon: true },
-                { to: `/PIMS/PPMP/${plan.id}`, label: `View '${plan.name}'` },
+                { to: '/PIMS/admin', icon: true },
+                { to: '/PIMS/admin/PPMP', label: 'Manage PPMP' },
+                { to: `/PIMS/admin/PPMP/${plan.id}`, label: `View '${plan.name}'` },
                 { label: 'Revise Project Item Details' },
             ]"
         />
@@ -480,5 +481,5 @@ async function save(): Promise<void> {
         </div>
     </div>
 
-    <NotFoundCard v-else title="PPMP not found" back-to="/PIMS/PPMP" />
+    <NotFoundCard v-else title="PPMP not found" back-to="/PIMS/admin/PPMP" />
 </template>

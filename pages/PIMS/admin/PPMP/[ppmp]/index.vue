@@ -37,7 +37,7 @@ const overallTotal = computed(() => store.totalAmountFor(ppmpId.value))
                     <PpmpDetailsCard :plan="plan" admin />
 
                     <div
-                        class="card card-stats bg-gradient-orange shadow-sm flex-grow-1 mb-4 position-relative overflow-hidden"
+                        class="card card-stats bg-gradient-red shadow-sm flex-grow-1 mb-4 position-relative overflow-hidden"
                     >
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -60,7 +60,7 @@ const overallTotal = computed(() => store.totalAmountFor(ppmpId.value))
                     </div>
 
                     <div
-                        class="card card-stats bg-gradient-orange shadow-sm flex-grow-1 mb-4 position-relative overflow-hidden"
+                        class="card card-stats bg-gradient-red shadow-sm flex-grow-1 mb-4 position-relative overflow-hidden"
                     >
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -84,7 +84,7 @@ const overallTotal = computed(() => store.totalAmountFor(ppmpId.value))
                 </div>
 
                 <div class="col-lg-4">
-                    <PpmpFieldOfficeCard :plan="plan" />
+                    <PpmpFieldOfficeCard :plan="plan" admin />
                 </div>
             </div>
 

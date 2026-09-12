@@ -12,10 +12,11 @@ const store = usePurchaseRequestStore()
 const modal = usePimsModal()
 
 /**
- * An Employee sees only their own Purchase Requests and a Unit Head only their
- * Unit's; the reviewing offices see all of them.
+ * Every role sees their own Purchase Requests here and no one else's. A
+ * reviewing office reads its queue in the administration console instead,
+ * which is the listing that widens by role.
  */
-const visible = computed(() => store.visibleTo(auth.userId, auth.ppmpRoleId))
+const visible = computed(() => store.ownedBy(auth.userId))
 
 const page = ref(1)
 const perPage = 10

@@ -200,7 +200,7 @@ function ppmpItemTitle(itemId: number | null): string {
         <div class="container-fluid mt--6">
             <div class="row">
                 <div class="col-xl-8">
-                    <div class="card bg-gradient-orange border-0">
+                    <div class="card bg-gradient-red border-0">
                         <div class="card-body position-relative">
                             <i
                                 class="ni ni-box-2 text-white position-absolute"

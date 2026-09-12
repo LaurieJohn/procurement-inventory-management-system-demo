@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PPMP_ROLE } from '~/data/reference'
+import { PPMP_STATUS } from '~/stores/ppmp'
 import type { Ppmp } from '~/data/demo'
 
 /**
@@ -19,8 +20,8 @@ const props = withDefaults(
          *
          * Moving a plan along belongs there and nowhere else, so the
          * office-facing page shows where a plan stands without offering to
-         * change it. The console also wears orange, which is how the demo
-         * tells the two views apart at a glance.
+         * change it. The console also has its own colour, which is how the
+         * demo tells the two views apart at a glance.
          */
         admin?: boolean
     }>(),
@@ -44,6 +45,13 @@ interface PlanAction {
     className: string
 }
 
+/**
+ * A plan waiting on approval is the Budget Officer's and the Admin's to decide.
+ * The Supply Officer moves a plan along everywhere else, but steps back here
+ * until it has been approved or sent back.
+ */
+const atForApproval = computed(() => props.plan.status_id === PPMP_STATUS.forApproval)
+
 /** Which transitions this viewer may make from the plan's current status. */
 const planActions = computed<PlanAction[]>(() => {
     if (!props.admin) {
@@ -65,7 +73,11 @@ const planActions = computed<PlanAction[]>(() => {
         })
     }
 
-    if ([3, 4, 5].includes(props.plan.status_id) && auth.isPpmpAdmin) {
+    const canReopen = atForApproval.value
+        ? isAdmin.value || isBudgetOfficer.value
+        : auth.isPpmpAdmin
+
+    if ([3, 4, 5].includes(props.plan.status_id) && canReopen) {
         actions.push({
             key: 'reopen',
             label: 'Re-open PPMP (Admin)',
@@ -137,7 +149,10 @@ async function runPlanAction(action: PlanAction): Promise<void> {
 async function exportExcel(): Promise<void> {
     await modal.notice({
         title: 'Generate APP Non-CSE',
-        text: 'The spreadsheet export needs the reporting service, which this front-end demo does not carry.',
+        text:
+            'The spreadsheet export needs the reporting service, which this front-end demo does not carry.' +
+            ' The printable output is shown in the screenshots on the case study.',
+        link: { href: 'https://ljar.vercel.app/projects/pims', label: 'View Case Study' },
     })
 }
 </script>
@@ -145,7 +160,7 @@ async function exportExcel(): Promise<void> {
 <template>
     <div
         class="card border-0 shadow-sm mb-4 position-relative overflow-hidden"
-        :class="admin ? 'bg-gradient-orange' : 'bg-gradient-blue'"
+        :class="admin ? 'bg-gradient-red' : 'bg-gradient-blue'"
     >
         <i
             class="ni ni-folder-17 text-white position-absolute"

@@ -131,8 +131,9 @@ export const usePurchaseRequestStore = defineStore('purchase-request', {
          * role is one of the offices that review Purchase Requests, so it sees
          * all of them.
          *
-         * Applied wherever Purchase Requests are listed — the requester's page
-         * and the administration console alike — so the two cannot disagree.
+         * Applied by the administration console's listing, and by the checks
+         * that guard a single Purchase Request. The office-facing listing shows
+         * a viewer their own and nothing else — see ownedBy.
          */
         visibleTo(): (viewerId: number, roleId: number) => Procurement[] {
             return (viewerId: number, roleId: number) => {
@@ -164,6 +165,18 @@ export const usePurchaseRequestStore = defineStore('purchase-request', {
          * The detail pages check this too: without it the listing would only be
          * hiding rows a viewer could still reach by typing the URL.
          */
+        /**
+         * What one viewer raised themselves.
+         *
+         * The office-facing listing is a record of your own requests whoever
+         * you are: a reviewing office reads its queue in the administration
+         * console, where visibleTo widens the listing by role.
+         */
+        ownedBy(): (viewerId: number) => Procurement[] {
+            return (viewerId: number) =>
+                this.allProcurements.filter((row) => row.user_id === viewerId)
+        },
+
         canView(): (procurement: Procurement, viewerId: number, roleId: number) => boolean {
             return (procurement: Procurement, viewerId: number, roleId: number) =>
                 this.visibleTo(viewerId, roleId).some((row) => row.id === procurement.id)

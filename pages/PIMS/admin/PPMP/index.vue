@@ -11,12 +11,11 @@ const modal = usePimsModal()
 const canManage = computed(() => auth.canManagePpmp)
 
 /**
- * Only an Admin may open a second plan while one is still on-going; a Supply
- * Officer has to wait for the current one to be consolidated.
+ * Opening a plan is the Admin's and the Supply Officer's, whether or not one is
+ * already on-going — the Supply Officer used to have to wait for the current
+ * plan to be consolidated first.
  */
-const canCreate = computed(
-    () => canManage.value && (auth.isSuperAdmin || auth.ppmpRoleId === 1 || !store.hasOngoingPpmp),
-)
+const canCreate = computed(() => canManage.value)
 
 async function confirmDelete(id: number): Promise<void> {
     const confirmed = await modal.confirm({

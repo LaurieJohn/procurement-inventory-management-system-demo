@@ -25,11 +25,18 @@ export interface ConfirmOptions {
     variant?: ModalVariant
 }
 
+/** A link offered under the message, for a notice that can point somewhere. */
+export interface ModalLink {
+    href: string
+    label: string
+}
+
 export interface NoticeOptions {
     title: string
     text?: string
     dismissText?: string
     variant?: ModalVariant
+    link?: ModalLink
 }
 
 interface ModalState {
@@ -40,6 +47,7 @@ interface ModalState {
     cancelText: string
     dismissText: string
     variant: ModalVariant
+    link: ModalLink | null
 }
 
 const state = reactive<ModalState>({
@@ -50,6 +58,7 @@ const state = reactive<ModalState>({
     cancelText: 'Cancel',
     dismissText: 'Close',
     variant: 'primary',
+    link: null,
 })
 
 /** Only one modal is ever on screen, so one pending resolver is enough. */
@@ -61,6 +70,7 @@ function settle(confirmed: boolean): void {
 
     resolver = null
     state.kind = null
+    state.link = null
 
     resolve?.(confirmed)
 }
@@ -98,6 +108,7 @@ export function usePimsModal() {
             state.text = options.text ?? ''
             state.dismissText = options.dismissText ?? 'Close'
             state.variant = options.variant ?? 'secondary'
+            state.link = options.link ?? null
 
             return new Promise<boolean>((resolve) => {
                 resolver = resolve

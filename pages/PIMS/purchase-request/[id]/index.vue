@@ -188,7 +188,10 @@ async function confirmDeleteLot(lotId: number): Promise<void> {
 async function printOrDownload(): Promise<void> {
     await modal.notice({
         title: 'Purchase Request Form',
-        text: 'Generating the Purchase Request Form needs the PDF service, which this front-end demo does not carry.',
+        text:
+            'Generating the Purchase Request Form needs the PDF service, which this front-end demo does not carry.' +
+            ' The printable output is shown in the screenshots on the case study.',
+        link: { href: 'https://ljar.vercel.app/projects/pims', label: 'View Case Study' },
     })
 }
 

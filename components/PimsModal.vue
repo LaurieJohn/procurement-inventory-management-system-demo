@@ -46,7 +46,16 @@ watch(state, () => {
                     </button>
                 </div>
 
-                <div class="modal-body text-center">{{ shown.text }}</div>
+                <div class="modal-body text-center">
+                    {{ shown.text }}
+
+                    <!-- A notice that can point somewhere says so under the message. -->
+                    <p v-if="shown.link" class="mt-3 mb-0">
+                        <a :href="shown.link.href" target="_blank" rel="noopener">
+                            {{ shown.link.label }}
+                        </a>
+                    </p>
+                </div>
 
                 <div class="modal-footer justify-content-center">
                     <button

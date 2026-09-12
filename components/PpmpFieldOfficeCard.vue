@@ -10,7 +10,19 @@ import type { Ppmp } from '~/data/demo'
  * Admin and the Supply Officer act on any office; everyone else only on their
  * own.
  */
-const props = defineProps<{ plan: Ppmp }>()
+const props = withDefaults(
+    defineProps<{
+        plan: Ppmp
+
+        /**
+         * Rendered inside the administration console, which colours its cards
+         * differently from the office-facing pages so the two do not get
+         * mistaken for one another.
+         */
+        admin?: boolean
+    }>(),
+    { admin: false },
+)
 
 const auth = useAuthStore()
 const store = usePpmpStore()
@@ -149,7 +161,10 @@ async function runFieldOfficeAction(officeId: number, action: string): Promise<v
     if (action === 'print_ppmp' || action === 'print_approved') {
         await modal.notice({
             title: 'Printable PPMP Form',
-            text: 'Generating the printable form needs the reporting service, which this front-end demo does not carry.',
+            text:
+                'Generating the printable form needs the reporting service, which this front-end demo does not carry.' +
+                ' The printable output is shown in the screenshots on the case study.',
+            link: { href: 'https://ljar.vercel.app/projects/pims', label: 'View Case Study' },
         })
 
         return
@@ -188,7 +203,10 @@ async function runFieldOfficeAction(officeId: number, action: string): Promise<v
 </script>
 
 <template>
-    <div class="card bg-gradient-info shadow-sm mb-4 position-relative overflow-hidden">
+    <div
+        class="card shadow-sm mb-4 position-relative overflow-hidden"
+        :class="admin ? 'bg-gradient-orange' : 'bg-gradient-info'"
+    >
         <div class="card-header bg-transparent">
             <div class="row align-items-center">
                 <div class="col">
