@@ -68,6 +68,11 @@ watch(prAdminActive, (active) => {
                             >
                                 <i class="ni ni-folder-17" style="color: #20befc"></i>
                                 <span class="nav-link-text">PPMP</span>
+                                <i
+                                    class="fas fa-chevron-down sidenav-caret"
+                                    :class="{ 'sidenav-caret--open': ppmpOpen }"
+                                    aria-hidden="true"
+                                ></i>
                             </a>
 
                             <div id="navbar-ppmp" class="collapse" :class="{ show: ppmpOpen }">
@@ -112,6 +117,11 @@ watch(prAdminActive, (active) => {
                             >
                                 <i class="ni ni-cart text-success"></i>
                                 <span class="nav-link-text">Purchase Request</span>
+                                <i
+                                    class="fas fa-chevron-down sidenav-caret"
+                                    :class="{ 'sidenav-caret--open': prOpen }"
+                                    aria-hidden="true"
+                                ></i>
                             </a>
 
                             <div

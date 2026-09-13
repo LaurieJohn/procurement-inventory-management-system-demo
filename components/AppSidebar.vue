@@ -71,6 +71,11 @@ watch(sectionActive, (active) => {
                             >
                                 <i class="fa fa-truck text-warning"></i>
                                 <span class="nav-link-text">Procurement and Inventory</span>
+                                <i
+                                    class="fas fa-chevron-down sidenav-caret"
+                                    :class="{ 'sidenav-caret--open': open }"
+                                    aria-hidden="true"
+                                ></i>
                             </a>
 
                             <div id="navbar-supply" class="collapse" :class="{ show: open }">

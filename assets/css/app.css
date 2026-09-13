@@ -170,3 +170,58 @@ body.g-sidenav-hidden:not(.g-sidenav-show) #sidenav-main + .main-content {
 body.demo-notice-open {
     overflow: hidden;
 }
+
+/* ── Sidebar: the page you are on ───────────────────────────────────────────
+   The theme marks the current page with a pale grey pill, but only on a
+   top-level item — the sub-page under it got nothing, so on a section page the
+   parent looked current and the page itself did not.
+
+   Both levels now carry the same pill, inset by the same half-rem from either
+   edge of the sidebar whatever their own indentation, so they read as one
+   column rather than as two different widths. The label stays where it sat:
+   what is taken as margin is given back as padding.
+
+   Selectors start at the sidebar's own id, which is enough to outrank the
+   theme's own rule for this wherever the two stylesheets land. */
+#sidenav-main.navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active,
+#sidenav-main.navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link.active {
+    /* A tint of indigo. The label keeps the theme's near-black rather than
+       taking the accent colour with it. */
+    background: #eceefc;
+    border-radius: 0.375rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    /* Held a little short of its row, so a section and the first page inside
+       it sit as two pills with a gap rather than as one block. */
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+
+#sidenav-main.navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active {
+    padding: 0.475rem 1rem;
+}
+
+#sidenav-main.navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link.active {
+    padding: 0.25rem 1rem 0.25rem 3rem;
+}
+
+/* The chevron that says a section opens and closes. The theme sizes every icon
+   in a nav link to a 2rem column to line the labels up; this one is not in that
+   column, it is the far end of the row. */
+#sidenav-main .navbar-nav .nav-link > i.sidenav-caret {
+    min-width: auto;
+    margin-left: auto;
+    font-size: 0.6875rem;
+    color: #adb5bd;
+    transition: transform 0.2s ease;
+}
+
+#sidenav-main .navbar-nav .nav-link > i.sidenav-caret--open {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #sidenav-main .navbar-nav .nav-link > i.sidenav-caret {
+        transition: none;
+    }
+}
