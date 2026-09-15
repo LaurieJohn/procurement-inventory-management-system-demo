@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, effectScope, ref, watch } from 'vue'
 
 /**
  * Argon's xl breakpoint. Above it the sidebar sits beside the content and the
@@ -54,18 +54,50 @@ export function useSidenav() {
         applyViewport(media.matches)
         media.addEventListener('change', (event) => applyViewport(event.matches))
 
-        watch(
-            [open, isDesktop],
-            ([isOpen, onDesktop]) => {
-                document.body.classList.toggle('g-sidenav-show', isOpen)
-                document.body.classList.toggle('g-sidenav-pinned', isOpen)
-                document.body.classList.toggle('g-sidenav-hidden', !isOpen)
+        /*
+         * An open sidebar covers the page on a narrow screen, so following any
+         * link has to put it away — otherwise it stays spread over the page it
+         * just went to.
+         *
+         * Wired to the router rather than watched from a component, for the
+         * same reason as the classes below: moving between the two layouts
+         * replaces the components, and the one watching the route was torn
+         * down by the very navigation it needed to react to. That is why the
+         * link into the administration console was the one that left the
+         * sidebar open.
+         */
+        useRouter().afterEach(() => {
+            if (!isDesktop.value) {
+                open.value = false
+            }
+        })
 
-                // Keeps the page behind from scrolling under the overlay.
-                document.body.classList.toggle('sidenav-open', !onDesktop && isOpen)
-            },
-            { immediate: true },
-        )
+        /*
+         * Detached on purpose. A watcher started inside a component's setup
+         * belongs to that component and is stopped when it unmounts — and the
+         * first caller here is whichever navbar or backdrop happened to mount
+         * first. Moving between the two layouts unmounts that one, which took
+         * the watcher with it and left nothing writing these classes: the
+         * sidebar then stayed spread over the page whatever the state said,
+         * since `initialised` is set and never wires it up again.
+         *
+         * The state is the application's, so its watcher belongs to no one
+         * component and runs for as long as the page is open.
+         */
+        effectScope(true).run(() => {
+            watch(
+                [open, isDesktop],
+                ([isOpen, onDesktop]) => {
+                    document.body.classList.toggle('g-sidenav-show', isOpen)
+                    document.body.classList.toggle('g-sidenav-pinned', isOpen)
+                    document.body.classList.toggle('g-sidenav-hidden', !isOpen)
+
+                    // Keeps the page behind from scrolling under the overlay.
+                    document.body.classList.toggle('sidenav-open', !onDesktop && isOpen)
+                },
+                { immediate: true },
+            )
+        })
     }
 
     return {
